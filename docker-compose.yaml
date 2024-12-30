@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  codeproject:
+    image: codeproject/ai-server:cpu-2.8.0
+    container_name: codeproject
+    ports:
+      - "32168:32168"
+      - "5000:5000"
+    restart: always
+
+  licpchromak:
+    image: paveslr/licplate-chromakey
+    container_name: licplate-chromakey
+    environment:
+      - YOLO_LICPLATE_ENDPOINT=http://codeproject:32168/v1/vision/custom/license-plate
+    ports:
+      - "7860:7860"
+    restart: always
+    tty: true
+    depends_on:
+      - codeproject
